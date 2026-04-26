@@ -1,0 +1,17 @@
+{
+    "name": "CupkekGames.Systems.Sequencer.ServiceLocator",
+    "rootNamespace": "",
+    "references": [
+        "GUID:c7e3bf78242d30749848d6c590ab9cb1",
+        "GUID:c95c4fa533d6fdb47871e2223c77f6d0"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

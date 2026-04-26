@@ -1,0 +1,24 @@
+{
+  "name": "com.cupkekgames.sequencer",
+  "displayName": "CupkekGames Sequencer",
+  "version": "0.1.0",
+  "author": {
+    "name": "CupkekGames",
+    "url": "https://www.docs.cupkek.games"
+  },
+  "unity": "6000.0",
+  "documentationUrl": "https://docs.cupkek.games/",
+  "description": "Boot/initialization sequencer for CupkekGames packages. Deterministic startup order, with bridges into SceneManagement and ServiceLocator for scene transitions and service registration during boot.",
+  "keywords": [
+    "Sequencer",
+    "Boot",
+    "Initialization",
+    "Lifecycle",
+    "CupkekGames"
+  ],
+  "dependencies": {
+    "com.cupkekgames.core": "0.1.0",
+    "com.cupkekgames.scenemanagement": "0.1.0",
+    "com.cupkekgames.servicelocator": "0.1.0"
+  }
+}
