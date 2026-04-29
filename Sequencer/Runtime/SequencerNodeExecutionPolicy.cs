@@ -1,4 +1,4 @@
-namespace CupkekGames.Systems
+namespace CupkekGames.Sequencer
 {
     /// <summary>
     /// Controls how often a sequencer node runs when referenced from multiple <see cref="SequenceRunner"/> instances or scenes.

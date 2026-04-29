@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace CupkekGames.Systems
+namespace CupkekGames.Sequencer
 {
     /// <summary>
     /// Activates or deactivates scene objects by name after earlier sequencer steps (e.g. service registration).

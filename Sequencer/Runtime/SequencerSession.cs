@@ -1,4 +1,4 @@
-namespace CupkekGames.Systems
+namespace CupkekGames.Sequencer
 {
     /// <summary>
     /// Public API for play-session bookkeeping used by <see cref="SequencerNodeExecutionPolicy.OncePerPlaySession"/>.

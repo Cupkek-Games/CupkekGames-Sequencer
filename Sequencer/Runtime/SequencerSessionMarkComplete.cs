@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CupkekGames.Systems
+namespace CupkekGames.Sequencer
 {
     /// <summary>
     /// Pre-marks <see cref="SequencerNodeExecutionPolicy.OncePerPlaySession"/> nodes in the session set so

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using CupkekGames.Luna;
 using UnityEngine;
 
-namespace CupkekGames.Systems
+namespace CupkekGames.Sequencer
 {
     /// <summary>
     /// Sequencer equivalent of addressables bootstrap (see <see cref="InitializationLoader"/>): loads one or more

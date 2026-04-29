@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace CupkekGames.Systems
+namespace CupkekGames.Sequencer
 {
     /// <summary>
     /// SO-based sequencer node contract.

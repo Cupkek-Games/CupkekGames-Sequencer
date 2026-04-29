@@ -29,10 +29,12 @@ com.cupkekgames.sequencer/
 
 ## Dependencies
 
-- `com.cupkekgames.core`
-- `com.cupkekgames.luna` (transition UI overlays)
-- `com.cupkekgames.data` (ServiceLocator from data; data drop-table for scene transitions if any)
-- `com.cupkekgames.addressables` (Addressables-based scene loading)
+- `com.cupkekgames.scenemanagement`
+- `com.cupkekgames.services`
+- `com.cupkekgames.singleton`
+- `com.cupkekgames.keyvaluedatabase`
+- `com.cupkekgames.luna` (transition UI overlays — for samples)
+- `com.cupkekgames.addressableassets` (optional, Addressables-based scene loading)
 
 ## Coding Conventions
 

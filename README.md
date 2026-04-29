@@ -7,11 +7,12 @@ Boot/initialization sequencer + scene management. Deterministic startup order, s
 - **`Sequencer/`** (CupkekGames.Systems.Sequencer.asmdef) — boot sequencer; runs initialization steps in deterministic order.
 - **`Sequencer.SceneManagement/`** (CupkekGames.Systems.Sequencer.SceneManagement.asmdef) — bridge: sequencer steps that load/unload scenes.
 - **`Sequencer.ServiceLocator/`** (CupkekGames.Systems.Sequencer.ServiceLocator.asmdef) — bridge: sequencer steps that register services.
-- **`SceneManagement/`** (CupkekGames.Systems.SceneManagement.asmdef) — scene transition system.
+
+(SceneManagement itself moved out into its own package `com.cupkekgames.scenemanagement`.)
 
 ## Dependencies
 
-- `com.cupkekgames.core`
-- `com.cupkekgames.luna` (transition UI)
-- `com.cupkekgames.data` (ServiceLocator integration)
-- `com.cupkekgames.addressables` (Addressables-based scene loading)
+- `com.cupkekgames.scenemanagement`
+- `com.cupkekgames.services`
+- `com.cupkekgames.singleton`
+- `com.cupkekgames.keyvaluedatabase`

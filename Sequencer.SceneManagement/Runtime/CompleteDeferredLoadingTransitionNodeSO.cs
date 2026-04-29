@@ -1,7 +1,8 @@
 using System.Collections;
+using CupkekGames.SceneManagement;
 using UnityEngine;
 
-namespace CupkekGames.Systems
+namespace CupkekGames.Sequencer
 {
     public enum DeferredLoadingTransitionTarget
     {

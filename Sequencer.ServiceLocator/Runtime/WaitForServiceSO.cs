@@ -1,8 +1,9 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using CupkekGames.Services;
 
-namespace CupkekGames.Systems
+namespace CupkekGames.Sequencer
 {
     [CreateAssetMenu(menuName = "CupkekGames/Sequencer/Wait For Service")]
     public class WaitForServiceSO : SequencerNodeSO

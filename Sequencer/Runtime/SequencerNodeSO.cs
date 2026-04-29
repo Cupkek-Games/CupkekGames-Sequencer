@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CupkekGames.Systems
+namespace CupkekGames.Sequencer
 {
     /// <summary>
     /// Base class for SO sequencer nodes.

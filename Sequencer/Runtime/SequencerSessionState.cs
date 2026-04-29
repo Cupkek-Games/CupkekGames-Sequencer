@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CupkekGames.Systems
+namespace CupkekGames.Sequencer
 {
     /// <summary>
     /// Tracks <see cref="SequencerNodeExecutionPolicy.OncePerPlaySession"/> completion for SO assets.

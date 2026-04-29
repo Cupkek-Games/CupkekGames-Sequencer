@@ -1,8 +1,9 @@
 using System.Collections;
 using CupkekGames.Luna;
+using CupkekGames.SceneManagement;
 using UnityEngine;
 
-namespace CupkekGames.Systems
+namespace CupkekGames.Sequencer
 {
     /// <summary>
     /// Sequencer equivalent of <see cref="SceneLoaderStartup"/>: requests a build-index load via

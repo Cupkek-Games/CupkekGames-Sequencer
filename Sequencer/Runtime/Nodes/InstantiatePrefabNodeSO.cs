@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CupkekGames.Systems
+namespace CupkekGames.Sequencer
 {
     [CreateAssetMenu(menuName = "CupkekGames/Sequencer/Instantiate Prefabs")]
     public class InstantiatePrefabNodeSO : SequencerNodeSO
