@@ -31,8 +31,8 @@ com.cupkekgames.sequencer/
 
 - `com.cupkekgames.scenemanagement`
 - `com.cupkekgames.services`
-- `com.cupkekgames.singleton`
-- `com.cupkekgames.keyvaluedatabase`
+- `com.cupkekgames.singletons`
+- `com.cupkekgames.keyvaluedatabases`
 - `com.cupkekgames.luna` (transition UI overlays — for samples)
 - `com.cupkekgames.addressableassets` (optional, Addressables-based scene loading)
 

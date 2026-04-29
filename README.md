@@ -14,5 +14,5 @@ Boot/initialization sequencer + scene management. Deterministic startup order, s
 
 - `com.cupkekgames.scenemanagement`
 - `com.cupkekgames.services`
-- `com.cupkekgames.singleton`
-- `com.cupkekgames.keyvaluedatabase`
+- `com.cupkekgames.singletons`
+- `com.cupkekgames.keyvaluedatabases`
