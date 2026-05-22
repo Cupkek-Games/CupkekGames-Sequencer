@@ -36,7 +36,7 @@ namespace CupkekGames.Sequencer
             bool firstAdd = CompletedOnceThisSession.Add(node);
             Debug.Log(
                 "[SequencerSession] MarkComplete " +
-                $"node='{node.name}' instanceId={node.GetInstanceID()} " +
+                $"node='{node.name}' instanceId={node.GetHashCode()} " +
                 $"reason={debugReason} " +
                 $"firstAdd={firstAdd} " +
                 $"(firstAdd=false → duplicate mark / same SO already in set)");

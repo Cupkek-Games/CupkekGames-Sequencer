@@ -46,7 +46,7 @@ namespace CupkekGames.Sequencer
                 {
                     Debug.Log(
                         "[SequencerExec] SKIP " +
-                        $"node='{node.name}' type={node.GetType().Name} instanceId={node.GetInstanceID()} " +
+                        $"node='{node.name}' type={node.GetType().Name} instanceId={node.GetHashCode()} " +
                         $"policy={node.ExecutionPolicy} " +
                         "(session set: pre-mark or completed earlier this play session)");
                 }
@@ -67,7 +67,7 @@ namespace CupkekGames.Sequencer
                 {
                     Debug.Log(
                         "[SequencerExec] BEGIN " +
-                        $"node='{node.name}' type={node.GetType().Name} instanceId={node.GetInstanceID()} " +
+                        $"node='{node.name}' type={node.GetType().Name} instanceId={node.GetHashCode()} " +
                         $"policy={node.ExecutionPolicy}");
                 }
 
