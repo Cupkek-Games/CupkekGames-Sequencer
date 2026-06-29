@@ -9,7 +9,7 @@ namespace CupkekGames.Sequencer
     /// <summary>
     /// Sequencer equivalent of addressables bootstrap (see <see cref="InitializationLoader"/>): loads one or more
     /// <see cref="SceneSO"/> via <see cref="SceneLoaderAddressable"/> with a <see cref="SceneTransitionDatabase"/> transition.
-    /// Fire-and-forget like <see cref="SceneLoaderStartupNodeSO"/>; use <see cref="CompleteDeferredLoadingTransitionNodeSO"/>
+    /// Fire-and-forget like <see cref="SceneLoaderStartupNodeSO"/>; use <see cref="RevealLoadingScreenNodeSO"/>
     /// with target <see cref="DeferredLoadingTransitionTarget.SceneLoaderAddressable"/> when deferring fade-out.
     /// </summary>
     [CreateAssetMenu(menuName = "CupkekGames/Sequencer/Load Scene (Addressables Startup)")]

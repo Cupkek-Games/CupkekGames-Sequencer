@@ -48,17 +48,22 @@ namespace CupkekGames.Sequencer
         }
 
         /// <summary>
-        /// If <paramref name="node"/> is a <see cref="SequenceGroupSO"/>, recurses into its list without marking the group.
-        /// Otherwise marks <paramref name="node"/> only when <see cref="SequencerNodeExecutionPolicy.OncePerPlaySession"/>.
+        /// If <paramref name="node"/> is a container (non-null <see cref="SequencerNodeSO.Children"/> —
+        /// e.g. SequenceGroup / ParallelGroup / Branch), recurses into its children without marking the
+        /// container. Otherwise marks <paramref name="node"/> only when
+        /// <see cref="SequencerNodeExecutionPolicy.OncePerPlaySession"/>.
         /// </summary>
         private static void MarkRecursive(SequencerNodeSO node, string reason)
         {
             if (node == null)
                 return;
 
-            if (node is SequenceGroupSO group)
+            // Container nodes (SequenceGroup, ParallelGroup, Branch) are transparent: recurse into
+            // their children without marking the container itself, so Always-policy steps inside still
+            // run. Leaf nodes expose null Children.
+            IReadOnlyList<SequencerNodeSO> children = node.Children;
+            if (children != null)
             {
-                IReadOnlyList<SequencerNodeSO> children = group.Sequences;
                 for (int c = 0; c < children.Count; c++)
                 {
                     SequencerNodeSO child = children[c];

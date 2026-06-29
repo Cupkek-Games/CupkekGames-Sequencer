@@ -45,11 +45,12 @@ Core concept:
 
 - `WaitForServiceSO`: waits for a service type to appear in `ServiceLocator`.
 - `RegisterServiceRegistryNodeSO`: `ServiceRegistrySO` list, `ServiceProviderSO` assets, plain `ScriptableObject` services (same registration order as `ServiceRegistry` minus MonoBehaviour components). Optional unregister when the sequence run is disposed.
-- `SceneLoaderStartupNodeSO`: build-index load via `SceneLoader` + `SceneTransitionDatabase` transition key — sequencer version of `SceneLoaderStartup` (fire-and-forget; pair with `CompleteDeferredLoadingTransitionNodeSO` when using deferred fade-out).
-- `SceneLoaderAddressableStartupNodeSO` (**UNITY_ADDRESSABLES**): load `SceneSO` list via `SceneLoaderAddressable` + transition key; optional `SetActiveScene` on first scene (like `InitializationLoader`). Pair with `CompleteDeferredLoadingTransitionNodeSO` target **SceneLoaderAddressable** when deferring fade-out. MonoBehaviour equivalent: **`SceneLoaderAddressableStartup`** in SceneManagement.
+- `SceneLoaderStartupNodeSO`: build-index load via `SceneLoader` + `SceneTransitionDatabase` transition key — sequencer version of `SceneLoaderStartup` (fire-and-forget; pair with `RevealLoadingScreenNodeSO` when using deferred fade-out).
+- `SceneLoaderAddressableStartupNodeSO` (**UNITY_ADDRESSABLES**): load `SceneSO` list via `SceneLoaderAddressable` + transition key; optional `SetActiveScene` on first scene (like `InitializationLoader`). Pair with `RevealLoadingScreenNodeSO` target **SceneLoaderAddressable** when deferring fade-out. MonoBehaviour equivalent: **`SceneLoaderAddressableStartup`** in SceneManagement.
 - `InstantiatePrefabNodeSO`: instantiates prefabs (optional `DontDestroyOnLoad`, optional **destroy on dispose**). With deferred disposal, **destroy on dispose** removes instances when the **`SequenceRunner`** is destroyed (or when a **new** `StartSequence` flushes the previous run), not when the step’s coroutine returns.
 - `SetGameObjectActiveNodeSO`: sets `GameObject.SetActive` by **name** in the **active scene** (matches root objects first, then optional deep search so **inactive** roots still resolve). Use as the **last** step to enable a disabled **content root** after services/registry steps.
-- `CompleteDeferredLoadingTransitionNodeSO`: tries `TryCompleteDeferredLoadingTransition()` on the chosen loader; optional **cold start** fallback `FadeOutTransitionByKey` when no deferred load ran (e.g. **Play** on MainMenu only — no init `SceneLoader` load). Optional **delay** (unscaled seconds).
+- `BootNavGraphsNodeSO`: calls `LunaLayers.BootDeferred()` — boots every `NavHostBoot.Manual` host (spawns its views) now that services/dependencies are registered. Idempotent (OnAwake / already-booted hosts are no-ops). Place AFTER service/dependency setup and BEFORE `RevealLoadingScreenNodeSO`.
+- `RevealLoadingScreenNodeSO`: waits for nav readiness (`LunaLayers.AllReady`, with min-visible / timeout / post-ready-hold), then completes the deferred loading transition on the chosen loader; optional **cold start** fallback `FadeOutTransitionByKey` when no deferred load ran (e.g. **Play** on MainMenu only). Folds the former `WaitForNavReadyNodeSO` + `CompleteDeferredLoadingTransitionNodeSO`. Policy-free re: press-to-continue — that's the transition's call (a `…WithInput` transition gates the exit via `SceneTransition.LoadingScreenContinueRequested`).
 
 ### Deferred loading transition
 
@@ -81,7 +82,7 @@ When loading with a `SceneTransition` (fade / loading UI), you can keep the **lo
 
 - Runner depends on nodes.
 - Nodes may depend on `ServiceLocator`/registries.
-- This assembly references `CupkekGames.Systems.SceneManagement` for `CompleteDeferredLoadingTransitionNodeSO` only.
+- This assembly references `CupkekGames.Systems.SceneManagement` for `RevealLoadingScreenNodeSO` (and the other scene-loader nodes).
 - Nodes should not depend on specific scene-only component references unless designed for that.
 
 ## Scope Notes

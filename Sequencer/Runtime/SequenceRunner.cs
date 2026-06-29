@@ -33,11 +33,9 @@ namespace CupkekGames.Sequencer
 
         private void OnDestroy()
         {
-            if (_activeRun != null)
-            {
-                StopCoroutine(_activeRun);
-                _activeRun = null;
-            }
+            // Cancel the Run() loop AND any in-flight ParallelGroup child coroutines before disposing.
+            StopAllCoroutines();
+            _activeRun = null;
 
             _runtime?.FlushDeferredDispose();
             _runtime = null;
@@ -45,14 +43,14 @@ namespace CupkekGames.Sequencer
 
         public void StartSequence()
         {
-            if (_activeRun != null)
-            {
-                StopCoroutine(_activeRun);
-                _activeRun = null;
-            }
+            // StopAllCoroutines, not just StopCoroutine(_activeRun): ParallelGroupSO fans its children
+            // out as separate coroutines on this MonoBehaviour, so a mid-run restart must cancel those
+            // too — otherwise they keep running against the runtime we're about to replace.
+            StopAllCoroutines();
+            _activeRun = null;
 
             _runtime?.FlushDeferredDispose();
-            _runtime = new SequencerRuntime(_logExecution);
+            _runtime = new SequencerRuntime(_logExecution, this);
             _activeRun = StartCoroutine(Run());
         }
 

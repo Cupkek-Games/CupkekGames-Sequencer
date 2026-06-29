@@ -11,6 +11,8 @@ namespace CupkekGames.Sequencer
 
         public IReadOnlyList<SequencerNodeSO> Sequences => _sequences;
 
+        public override IReadOnlyList<SequencerNodeSO> Children => _sequences;
+
         public override IEnumerator Execute(SequencerRuntime runtime)
         {
             for (int i = 0; i < _sequences.Count; i++)

@@ -9,20 +9,58 @@ namespace CupkekGames.Sequencer
     /// </summary>
     public sealed class SequencerRuntime
     {
-        private readonly HashSet<SequencerNodeSO> _activePath = new();
-        private readonly Stack<SequencerNodeSO> _deferredDispose = new();
+        private readonly HashSet<SequencerNodeSO> _activePath;
+        private readonly Stack<SequencerNodeSO> _deferredDispose;
         private readonly bool _logExecution;
+        private readonly MonoBehaviour _coroutineHost;
 
-        public SequencerRuntime(bool logExecution = true)
+        public SequencerRuntime(bool logExecution = true, MonoBehaviour coroutineHost = null)
+            : this(logExecution, coroutineHost, new Stack<SequencerNodeSO>(), seedPath: null)
+        {
+        }
+
+        // Forked-branch ctor: shares the root's deferred-dispose stack + host, and SEEDS its
+        // cycle-guard path from the forking branch's current path (a COPY) so a real cycle back to an
+        // ancestor is still caught, while concurrent siblings — each a separate copy taken before any
+        // sibling runs — don't see one another. See ForkBranch / ParallelGroupSO.
+        private SequencerRuntime(
+            bool logExecution,
+            MonoBehaviour coroutineHost,
+            Stack<SequencerNodeSO> deferredDispose,
+            HashSet<SequencerNodeSO> seedPath)
         {
             _logExecution = logExecution;
+            _coroutineHost = coroutineHost;
+            _deferredDispose = deferredDispose;
+            _activePath = seedPath != null
+                ? new HashSet<SequencerNodeSO>(seedPath)
+                : new HashSet<SequencerNodeSO>();
         }
 
         public bool LogExecution => _logExecution;
 
         /// <summary>
+        /// The MonoBehaviour driving this run (the owning <see cref="SequenceRunner"/>). Nodes that
+        /// must fan out concurrent coroutines (e.g. <see cref="ParallelGroupSO"/>) start them on this
+        /// host so Unity honors their yields (WaitForSeconds, AsyncOperation, nested sequences).
+        /// Null when the runtime was constructed without a host — such nodes then run sequentially.
+        /// </summary>
+        public MonoBehaviour CoroutineHost => _coroutineHost;
+
+        /// <summary>
+        /// Create a child runtime for ONE concurrent branch (used by <see cref="ParallelGroupSO"/>). It
+        /// shares this runtime's coroutine host and deferred-dispose stack — so disposes still flush
+        /// with the owning <see cref="SequenceRunner"/> — but gets its own cycle-guard path seeded
+        /// (copied) from this one, so sibling branches don't cross-trip the cycle detector.
+        /// </summary>
+        public SequencerRuntime ForkBranch() =>
+            new SequencerRuntime(_logExecution, _coroutineHost, _deferredDispose, _activePath);
+
+        /// <summary>
         /// Runs <see cref="SequencerNodeSO.Dispose"/> for every node that finished execution on this runtime,
-        /// in reverse completion order (nested children before parents). Call when the owning
+        /// in reverse order of completion. A node is recorded only after its <see cref="SequencerNodeSO.Execute"/>
+        /// returns — i.e. after the children it ran — so a container disposes before those children (per lineage;
+        /// forked parallel branches interleave but each lineage keeps this order). Call when the owning
         /// <see cref="SequenceRunner"/> is destroyed or before starting a new run on the same runner.
         /// </summary>
         public void FlushDeferredDispose()

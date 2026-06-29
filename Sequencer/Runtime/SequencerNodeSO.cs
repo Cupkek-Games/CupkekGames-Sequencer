@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CupkekGames.Sequencer
@@ -15,6 +16,14 @@ namespace CupkekGames.Sequencer
         public SequencerNodeExecutionPolicy ExecutionPolicy => _executionPolicy;
 
         public abstract System.Collections.IEnumerator Execute(SequencerRuntime runtime);
+
+        /// <summary>
+        /// Child nodes this node contains, for STATIC tree traversal (e.g. session pre-marking by
+        /// <see cref="SequencerSessionMarkComplete"/>) — not execution, which goes through
+        /// <see cref="Execute"/>. Null for leaf nodes (the default); container nodes (groups, branch)
+        /// override it to return their child list (non-null, possibly empty).
+        /// </summary>
+        public virtual IReadOnlyList<SequencerNodeSO> Children => null;
 
         /// <summary>
         /// Called when the owning <see cref="SequenceRunner"/> is destroyed or a new run replaces the previous one
