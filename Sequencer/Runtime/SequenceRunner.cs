@@ -25,6 +25,12 @@ namespace CupkekGames.Sequencer
 
         public IReadOnlyList<SequencerNodeSO> Sequences => _sequences;
 
+        /// <summary>
+        /// True while a Run() is in flight. Observability seam for boot orchestration
+        /// and tests ("is any runner still booting?") — no reflection required.
+        /// </summary>
+        public bool IsRunning => _activeRun != null;
+
         private void Awake()
         {
             if (_runOnAwake)
