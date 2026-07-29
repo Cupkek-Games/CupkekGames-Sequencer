@@ -1,7 +1,7 @@
 ﻿{
   "name": "com.cupkekgames.sequencer",
   "displayName": "CupkekGames Sequencer",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "author": {
     "name": "CupkekGames",
     "url": "https://www.docs.cupkek.games"
@@ -17,7 +17,7 @@
     "CupkekGames"
   ],
   "dependencies": {
-    "com.cupkekgames.scenemanagement": "0.2.0",
+    "com.cupkekgames.scenemanagement": "0.2.3",
     "com.cupkekgames.services": "0.1.4",
     "com.cupkekgames.singletons": "0.1.2",
     "com.cupkekgames.keyvaluedatabases": "0.2.0"
