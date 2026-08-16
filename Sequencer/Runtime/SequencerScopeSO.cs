@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Scripting.LifecycleManagement;
 
 namespace CupkekGames.Sequencer
 {
@@ -12,12 +13,19 @@ namespace CupkekGames.Sequencer
     /// <see cref="SequencerSessionState"/>).
     /// </summary>
     [CreateAssetMenu(menuName = "CupkekGames/Sequencer/Scope")]
-    public class SequencerScopeSO : ScriptableObject
+    public partial class SequencerScopeSO : ScriptableObject
     {
+        // Owned by the hook below, not [AutoStaticsCleanup]: each scope needs ClearState()
+        // called on it before the set is dropped, and the generated cleanup only replaces
+        // the collection — it never touches the elements inside it.
+        [NoAutoStaticsCleanup]
         private static readonly HashSet<SequencerScopeSO> ActiveScopes = new();
 
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        private static void OnBeforeFirstSceneLoad()
+        [NoAutoStaticsCleanup]
+        private static readonly DelegateAutoCleanup _autoCleanup =
+            DelegateAutoCleanup.CreateForPlayMode(ClearActiveScopes, "CupkekGames.Sequencer.SequencerScopeSO");
+
+        private static void ClearActiveScopes()
         {
             foreach (SequencerScopeSO scope in ActiveScopes)
                 scope.ClearState();

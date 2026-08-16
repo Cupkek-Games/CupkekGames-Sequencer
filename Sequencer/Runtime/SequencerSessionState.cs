@@ -1,27 +1,22 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Scripting.LifecycleManagement;
 
 namespace CupkekGames.Sequencer
 {
     /// <summary>
     /// Tracks <see cref="SequencerNodeExecutionPolicy.OncePerPlaySession"/> completion for SO assets.
-    /// Cleared on each Editor Play Mode entry / player start via <see cref="RuntimeInitializeLoadType.BeforeSceneLoad"/>
-    /// (before the first scene’s <c>Awake</c>), not <see cref="RuntimeInitializeLoadType.SubsystemRegistration"/> —
-    /// the latter can run only once per domain when Enter Play Mode disables Domain Reload, leaving this set stale between plays.
+    /// Cleared per play session by the generated statics cleanup.
+    ///
+    /// This previously used <see cref="RuntimeInitializeLoadType.BeforeSceneLoad"/> and claimed
+    /// <see cref="RuntimeInitializeLoadType.SubsystemRegistration"/> runs only once per domain when
+    /// Enter Play Mode disables Domain Reload. That was not true in 6000.6 — both load types re-fire
+    /// every play session. Either would have worked; the attribute now covers it.
     /// </summary>
-    internal static class SequencerSessionState
+    internal static partial class SequencerSessionState
     {
-        private static readonly HashSet<SequencerNodeSO> CompletedOnceThisSession = new();
-
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        private static void OnBeforeFirstSceneLoad()
-        {
-            int had = CompletedOnceThisSession.Count;
-            CompletedOnceThisSession.Clear();
-            Debug.Log(
-                "[SequencerSession] Cleared completion set " +
-                $"(had {had} entr{(had == 1 ? "y" : "ies")}, BeforeSceneLoad / new play session).");
-        }
+        [AutoStaticsCleanup]
+        private static HashSet<SequencerNodeSO> CompletedOnceThisSession = new();
 
         public static bool HasCompletedThisSession(SequencerNodeSO node)
         {
