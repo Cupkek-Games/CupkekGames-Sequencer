@@ -2,7 +2,8 @@
     "name": "CupkekGames.Sequencer",
     "rootNamespace": "",
     "references": [
-        "GUID:8c5a58f4ceeaeff428a5333f02ab4313"
+        "GUID:8c5a58f4ceeaeff428a5333f02ab4313",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

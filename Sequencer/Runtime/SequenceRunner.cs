@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -22,6 +24,8 @@ namespace CupkekGames.Sequencer
 
         private Coroutine _activeRun;
         private SequencerRuntime _runtime;
+        // Completed when the run in flight finishes; null while idle or before anyone waits.
+        private UniTaskCompletionSource _idle;
 
         public IReadOnlyList<SequencerNodeSO> Sequences => _sequences;
 
@@ -30,6 +34,18 @@ namespace CupkekGames.Sequencer
         /// and tests ("is any runner still booting?") — no reflection required.
         /// </summary>
         public bool IsRunning => _activeRun != null;
+
+        /// <summary>
+        /// Completes when no Run() is in flight: at once while idle, else when the run finishes
+        /// (a restart mid-run waits for the new run). Cancelled by the token, or when the runner is
+        /// destroyed before its run finished.
+        /// </summary>
+        public UniTask WaitIdleAsync(CancellationToken token)
+        {
+            if (!IsRunning) return UniTask.CompletedTask;
+            _idle ??= new UniTaskCompletionSource();
+            return _idle.Task.AttachExternalCancellation(token);
+        }
 
         private void Awake()
         {
@@ -42,6 +58,8 @@ namespace CupkekGames.Sequencer
             // Cancel the Run() loop AND any in-flight ParallelGroup child coroutines before disposing.
             StopAllCoroutines();
             _activeRun = null;
+            _idle?.TrySetCanceled();
+            _idle = null;
 
             _runtime?.FlushDeferredDispose();
             _runtime = null;
@@ -88,6 +106,9 @@ namespace CupkekGames.Sequencer
                 Debug.Log($"[SequencerExec] StartSequence finished runner='{gameObject.name}'");
 
             _activeRun = null;
+            UniTaskCompletionSource idle = _idle;
+            _idle = null;
+            idle?.TrySetResult();
         }
     }
 }
