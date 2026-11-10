@@ -2,7 +2,7 @@
 
 ## Package Overview
 
-**CupkekGames Sequencer** (`com.cupkekgames.sequencer`) is the boot/initialization + scene management system. Deterministic startup order, scene transitions, ServiceLocator integration.
+**CupkekGames Sequencer** (`com.cupkekgames.sequencer`) is the boot/initialization system. Deterministic startup order, with bridges to scene loading (`com.cupkekgames.scenemanagement`, its own package) and ServiceLocator registration.
 
 ## Critical: Do not hand-edit Unity serialized assets or `.meta` files
 
@@ -15,16 +15,13 @@ com.cupkekgames.sequencer/
   package.json
   README.md
   AGENTS.md
-  Sequencer/                       ← CupkekGames.Systems.Sequencer.asmdef
+  Sequencer/                       ← CupkekGames.Sequencer.asmdef (+ Editor)
     Runtime/                         (boot sequencer; deterministic init order)
     Editor/
-  Sequencer.SceneManagement/       ← bridge: sequencer + scene loading
+  Sequencer.SceneManagement/       ← CupkekGames.Sequencer.SceneManagement.asmdef (bridge: sequencer + scene loading)
     Runtime/
-  Sequencer.ServiceLocator/        ← bridge: sequencer + service registration
+  Sequencer.ServiceLocator/        ← CupkekGames.Sequencer.ServiceLocator.asmdef (bridge: sequencer + service registration)
     Runtime/
-  SceneManagement/                 ← CupkekGames.Systems.SceneManagement.asmdef
-    Runtime/                         (scene transitions)
-    Editor/
 ```
 
 ## Dependencies
@@ -33,11 +30,10 @@ com.cupkekgames.sequencer/
 - `com.cupkekgames.services`
 - `com.cupkekgames.singletons`
 - `com.cupkekgames.keyvaluedatabases`
-- `com.cupkekgames.luna` (transition UI overlays — for samples)
-- `com.cupkekgames.addressableassets` (optional, Addressables-based scene loading)
+- `com.unity.addressables` (optional, via `versionDefines`)
 
 ## Coding Conventions
 
-- **Namespaces**: `CupkekGames.Systems.Sequencer`, `CupkekGames.Systems.SceneManagement`, etc. (match asmdef name)
+- **Namespaces**: `CupkekGames.Sequencer` (all runtime asmdefs), `CupkekGames.Sequencer.Editor`
 - **Asmdefs**: GUID references; `versionDefines` for `com.unity.addressables`
 - **Strict typing**
